@@ -3,7 +3,10 @@ import * as cheerio from "cheerio";
 
 export async function searchDuckDuckGo(query) {
   const url = `https://duckduckgo.com/html/?q=${encodeURIComponent(query)}`;
-  const res = await axios.get(url, { headers: { "User-Agent": "Mozilla/5.0" } });
+  const res = await axios.get(url, {
+    headers: { "User-Agent": "Mozilla/5.0" },
+  });
+
   const $ = cheerio.load(res.data);
   const results = [];
 

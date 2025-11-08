@@ -5,16 +5,16 @@ import stringSimilarity from "string-similarity";
 const THRESHOLD = {
   hard: 0.7,
   medium: 0.8,
-  soft: 0.9
+  soft: 0.9,
 };
 
-export async function checkText(text, mode = "medium") {
+export async function checkTextService(text, mode = "medium") {
   const sentences = splitIntoSentences(text);
   const checkedResults = [];
   let plagiarizedCount = 0;
 
   const threshold = THRESHOLD[mode] || THRESHOLD.medium;
-  const BLOCK_SIZE = 3; // перевірка блоками по 3 речення
+  const BLOCK_SIZE = 3;
 
   const blocks = [];
   for (let i = 0; i < sentences.length; i += BLOCK_SIZE) {
@@ -31,6 +31,7 @@ export async function checkText(text, mode = "medium") {
       const snippetText = result.snippet.toLowerCase();
       const blockText = block.toLowerCase();
       const similarity = stringSimilarity.compareTwoStrings(blockText, snippetText);
+
       if (similarity > maxSimilarity) maxSimilarity = similarity;
       if (similarity >= threshold) {
         found = true;
@@ -50,10 +51,7 @@ export async function checkText(text, mode = "medium") {
     await new Promise((r) => setTimeout(r, 2000));
   }
 
-  let totalSimilarity = 0;
-  for (const res of checkedResults) {
-    totalSimilarity += res.similarity;
-  }
+  const totalSimilarity = checkedResults.reduce((acc, r) => acc + r.similarity, 0);
   const uniqueness = Math.round(100 * (1 - totalSimilarity / checkedResults.length));
 
   return {
@@ -61,6 +59,6 @@ export async function checkText(text, mode = "medium") {
     totalBlocks: checkedResults.length,
     checkedResults,
     checkedAt: new Date().toISOString(),
-    mode
+    mode,
   };
 }
