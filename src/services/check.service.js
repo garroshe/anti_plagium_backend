@@ -2,35 +2,37 @@ import { splitIntoSentences } from "../utils/text.js";
 import { searchDuckDuckGo } from "../utils/scraper.js";
 import stringSimilarity from "string-similarity";
 
-export async function checkText(text) {
+const THRESHOLD = {
+  hard: 0.7,
+  medium: 0.8,
+  soft: 0.9
+};
+
+export async function checkText(text, mode = "medium") {
   const sentences = splitIntoSentences(text);
   const checkedResults = [];
   let plagiarizedCount = 0;
 
-  const limitedSentences = sentences.slice(0, 10);
+  const threshold = THRESHOLD[mode] || THRESHOLD.medium;
+  const BLOCK_SIZE = 3; // перевірка блоками по 3 речення
 
-  for (const sentence of limitedSentences) {
-    if (sentence.length < 30) {
-      checkedResults.push({
-        sentence,
-        found: false,
-        similarity: 0,
-        matches: [],
-      });
-      continue;
-    }
+  const blocks = [];
+  for (let i = 0; i < sentences.length; i += BLOCK_SIZE) {
+    blocks.push(sentences.slice(i, i + BLOCK_SIZE).join(" "));
+  }
 
-    const results = await searchDuckDuckGo(sentence);
+  for (const block of blocks) {
+    const results = await searchDuckDuckGo(block);
 
     let found = false;
     let maxSimilarity = 0;
 
     for (const result of results) {
       const snippetText = result.snippet.toLowerCase();
-      const sentenceText = sentence.toLowerCase();
-      const similarity = stringSimilarity.compareTwoStrings(sentenceText, snippetText);
+      const blockText = block.toLowerCase();
+      const similarity = stringSimilarity.compareTwoStrings(blockText, snippetText);
       if (similarity > maxSimilarity) maxSimilarity = similarity;
-      if (similarity >= 0.7) {
+      if (similarity >= threshold) {
         found = true;
         break;
       }
@@ -39,7 +41,7 @@ export async function checkText(text) {
     if (found) plagiarizedCount++;
 
     checkedResults.push({
-      sentence,
+      block,
       found,
       similarity: maxSimilarity,
       matches: results.slice(0, 3),
@@ -48,16 +50,17 @@ export async function checkText(text) {
     await new Promise((r) => setTimeout(r, 2000));
   }
 
-  let totalScore = 0;
+  let totalSimilarity = 0;
   for (const res of checkedResults) {
-    totalScore += 1 - (res.similarity || 0);
+    totalSimilarity += res.similarity;
   }
-  const uniqueness = Math.round((totalScore / checkedResults.length) * 100);
+  const uniqueness = Math.round(100 * (1 - totalSimilarity / checkedResults.length));
 
   return {
     uniqueness,
-    totalSentences: checkedResults.length,
+    totalBlocks: checkedResults.length,
     checkedResults,
     checkedAt: new Date().toISOString(),
+    mode
   };
 }
