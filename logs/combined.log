@@ -1,0 +1,32 @@
+{"level":"info","message":"🚀 Сервер запущено на порту 3000","timestamp":"2025-11-09T12:43:53.585Z"}
+{"level":"info","message":"🌍 Середовище: development","timestamp":"2025-11-09T12:43:53.587Z"}
+{"ip":"::1","level":"info","message":"POST /check","timestamp":"2025-11-09T12:44:46.402Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"}
+{"level":"info","message":"📝 Початок перевірки 8 блоків (23 речень)","timestamp":"2025-11-09T12:44:46.408Z"}
+{"level":"debug","message":"✅ Google Search успішно виконано","timestamp":"2025-11-09T12:44:47.188Z"}
+{"level":"debug","message":"✅ Google Search успішно виконано","timestamp":"2025-11-09T12:44:47.194Z"}
+{"level":"debug","message":"✅ Google Search успішно виконано","timestamp":"2025-11-09T12:44:47.328Z"}
+{"level":"debug","message":"✅ Google Search успішно виконано","timestamp":"2025-11-09T12:44:49.471Z"}
+{"level":"debug","message":"✅ Google Search успішно виконано","timestamp":"2025-11-09T12:44:49.489Z"}
+{"level":"debug","message":"✅ Google Search успішно виконано","timestamp":"2025-11-09T12:44:49.492Z"}
+{"level":"debug","message":"✅ Google Search успішно виконано","timestamp":"2025-11-09T12:44:51.340Z"}
+{"level":"debug","message":"✅ Google Search успішно виконано","timestamp":"2025-11-09T12:44:51.689Z"}
+{"level":"info","message":"✅ Перевірка завершена за 5285ms. Унікальність: 79%","timestamp":"2025-11-09T12:44:51.693Z"}
+{"ip":"::1","level":"info","message":"POST /check","timestamp":"2025-11-09T12:47:31.030Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"}
+{"level":"info","message":"📝 Початок перевірки 14 блоків (42 речень)","timestamp":"2025-11-09T12:47:31.036Z"}
+{"level":"debug","message":"✅ Google Search успішно виконано","timestamp":"2025-11-09T12:47:31.582Z"}
+{"level":"debug","message":"✅ Google Search успішно виконано","timestamp":"2025-11-09T12:47:31.592Z"}
+{"level":"debug","message":"✅ Google Search успішно виконано","timestamp":"2025-11-09T12:47:31.644Z"}
+{"level":"debug","message":"✅ Google Search успішно виконано","timestamp":"2025-11-09T12:47:33.625Z"}
+{"level":"debug","message":"✅ Google Search успішно виконано","timestamp":"2025-11-09T12:47:33.635Z"}
+{"level":"debug","message":"✅ Google Search успішно виконано","timestamp":"2025-11-09T12:47:33.637Z"}
+{"level":"debug","message":"✅ Google Search успішно виконано","timestamp":"2025-11-09T12:47:35.382Z"}
+{"level":"debug","message":"✅ Google Search успішно виконано","timestamp":"2025-11-09T12:47:35.385Z"}
+{"level":"debug","message":"✅ Google Search успішно виконано","timestamp":"2025-11-09T12:47:35.566Z"}
+{"level":"debug","message":"✅ Google Search успішно виконано","timestamp":"2025-11-09T12:47:37.512Z"}
+{"level":"debug","message":"✅ Google Search успішно виконано","timestamp":"2025-11-09T12:47:37.573Z"}
+{"level":"debug","message":"✅ Google Search успішно виконано","timestamp":"2025-11-09T12:47:37.662Z"}
+{"level":"debug","message":"✅ Google Search успішно виконано","timestamp":"2025-11-09T12:47:39.506Z"}
+{"level":"debug","message":"✅ Google Search успішно виконано","timestamp":"2025-11-09T12:47:39.598Z"}
+{"level":"info","message":"✅ Перевірка завершена за 8567ms. Унікальність: 12%","timestamp":"2025-11-09T12:47:39.602Z"}
+{"level":"info","message":"🚀 Сервер запущено на порту 3000","timestamp":"2025-11-09T12:48:33.442Z"}
+{"level":"info","message":"🌍 Середовище: development","timestamp":"2025-11-09T12:48:33.444Z"}
