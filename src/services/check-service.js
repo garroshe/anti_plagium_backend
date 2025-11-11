@@ -1,9 +1,7 @@
 import { splitIntoSentences, normalize } from "../utils/text.js";
 import { searchWeb } from "../utils/scraper.js";
 import stringSimilarity from "string-similarity";
-import { logger } from "../utils/logger.js";
 
-/** Нелінійне зниження схожості */
 function adjustScore(sim) {
   if (sim < 0.4) return sim * 0.5;
   if (sim < 0.7) return sim * 0.8;
@@ -11,14 +9,12 @@ function adjustScore(sim) {
   return sim * 0.95;
 }
 
-/** Повертає масив слів блоку, які збіглися зі snippet */
 function getMatchedPhrases(sentence, snippet) {
   const sentenceWords = normalize(sentence).split(" ");
   const snippetWords = normalize(snippet).split(" ");
   return sentenceWords.filter((w) => snippetWords.includes(w));
 }
 
-/** Обробка одного блоку з retry логікою */
 async function checkBlock(block, retries = 2) {
   const normalizedBlock = normalize(block);
 
@@ -27,7 +23,6 @@ async function checkBlock(block, retries = 2) {
       const results = await searchWeb(normalizedBlock);
 
       if (!results || results.length === 0) {
-        logger.warn("⚠️ Результати пошуку відсутні для блоку");
         return {
           sentence: block,
           found: false,
@@ -65,7 +60,6 @@ async function checkBlock(block, retries = 2) {
         maxSim,
       };
     } catch (error) {
-      logger.error(`❌ Помилка перевірки блоку (спроба ${attempt + 1}):`, error.message);
 
       if (attempt === retries) {
         return {
@@ -77,13 +71,11 @@ async function checkBlock(block, retries = 2) {
         };
       }
 
-      // Експоненційна затримка перед retry
       await new Promise(r => setTimeout(r, 1000 * Math.pow(2, attempt)));
     }
   }
 }
 
-/** Паралельна перевірка з обмеженням одночасних запитів */
 async function checkBlocksConcurrently(blocks, concurrency = 3) {
   const results = [];
 
@@ -94,7 +86,6 @@ async function checkBlocksConcurrently(blocks, concurrency = 3) {
     );
     results.push(...chunkResults);
 
-    // Затримка між групами запитів
     if (i + concurrency < blocks.length) {
       await new Promise(r => setTimeout(r, 1500));
     }
@@ -107,7 +98,6 @@ export async function checkTextService(text, options = {}) {
   const startTime = Date.now();
   const { blockSize = 3, concurrency = 3 } = options;
 
-  // Валідація
   if (!text || typeof text !== "string") {
     throw new Error("Некоректний текст");
   }
@@ -118,18 +108,13 @@ export async function checkTextService(text, options = {}) {
     throw new Error("Не вдалося розбити текст на речення");
   }
 
-  // Створення блоків
   const blocks = [];
   for (let i = 0; i < sentences.length; i += blockSize) {
     blocks.push(sentences.slice(i, i + blockSize).join(" "));
   }
 
-  logger.info(`📝 Початок перевірки ${blocks.length} блоків (${sentences.length} речень)`);
-
-  // Паралельна перевірка
   const checkedResults = await checkBlocksConcurrently(blocks, concurrency);
 
-  // Підрахунок метрик
   let totalSim = 0;
   let foundCount = 0;
   let errorCount = 0;
@@ -149,7 +134,6 @@ export async function checkTextService(text, options = {}) {
   const uniqueness = Math.max(0, Math.round(100 - avgSim * 100 - plagPercent * 0.4));
 
   const duration = Date.now() - startTime;
-  logger.info(`✅ Перевірка завершена за ${duration}ms. Унікальність: ${uniqueness}%`);
 
   return {
     uniqueness,

@@ -1,26 +1,22 @@
 import app from "./app.js";
-import { config } from "./config/index.js";
-import { logger } from "./utils/logger.js";
+import { config } from "./config/config.js";
 
 const server = app.listen(config.PORT, () => {
-  logger.info(`🚀 Сервер запущено на порту ${config.PORT}`);
-  logger.info(`🌍 Середовище: ${config.NODE_ENV}`);
+  console.log(`Start server on port ${config.PORT}`);
 });
 
-// Graceful shutdown
 process.on("SIGTERM", () => {
-  logger.info("SIGTERM отримано. Закриття сервера...");
+  console.log("Stop server");
   server.close(() => {
-    logger.info("Сервер закрито");
     process.exit(0);
   });
 });
 
-process.on("unhandledRejection", (reason, promise) => {
-  logger.error("Unhandled Rejection:", reason);
+process.on("unhandledRejection", (err) => {
+  process.exit(1);
 });
 
-process.on("uncaughtException", (error) => {
-  logger.error("Uncaught Exception:", error);
+process.on("uncaughtException", (err) => {
+  console.error("Error", err);
   process.exit(1);
 });

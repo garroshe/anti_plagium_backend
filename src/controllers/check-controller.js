@@ -1,4 +1,4 @@
-import { checkTextService } from "../services/check.service.js";
+import { checkTextService } from "../services/check-service.js";
 
 export async function checkTextController(req, res, next) {
   try {

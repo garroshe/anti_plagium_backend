@@ -1,48 +1,22 @@
 import express from "express";
-import cors from "cors";
 import helmet from "helmet";
-import checkRouter from "./routes/check.route.js";
-import { errorHandler, notFoundHandler } from "./middlewares/errorHandler.js";
-import { logger } from "./utils/logger.js";
+import cors from "cors";
 
-const app = express();
+import checkRoutes from "./routes/check-route.js";
+import { notFoundHandler } from "./middlewares/error-handler.js";
 
-// Security middleware
-app.use(helmet());
+const server = express();
 
-// CORS
-app.use(cors({
-  origin: process.env.CORS_ORIGIN || "*",
-  credentials: true,
-}));
+server.use(helmet());
+server.use(cors());
+server.use(express.json({ limit: "5mb" }));
 
-// Body parser
-app.use(express.json({ limit: "10mb" }));
-app.use(express.urlencoded({ extended: true, limit: "10mb" }));
-
-// Request logging
-app.use((req, res, next) => {
-  logger.info(`${req.method} ${req.url}`, {
-    ip: req.ip,
-    userAgent: req.get("user-agent"),
-  });
-  next();
+server.get("/health", (req, res) => {
+  res.json({ status: "ok", uptime: process.uptime() });
 });
 
-// Health check
-app.get("/health", (req, res) => {
-  res.json({
-    status: "OK",
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime(),
-  });
-});
+server.use("/check", checkRoutes);
 
-// Routes
-app.use("/check", checkRouter);
+server.use(notFoundHandler);
 
-// Error handlers
-app.use(notFoundHandler);
-app.use(errorHandler);
-
-export default app;
+export default server;
