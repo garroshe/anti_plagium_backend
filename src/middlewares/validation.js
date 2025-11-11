@@ -5,7 +5,7 @@ export const validateCheckText = [
     .exists()
     .isString()
     .trim()
-    .isLength({ min: 20, max: 65000 }).withMessage("Довжина: 20-50000 символів"),
+    .isLength({ min: 20, max: 50000 }).withMessage("Довжина: 20-50000 символів"),
 
   (req, res, next) => {
     const errors = validationResult(req);
