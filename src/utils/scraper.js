@@ -47,10 +47,20 @@ export async function googleSearch(query) {
   }
 
   try {
-    const { data } = await axios.get("https://www.googleapis.com/customsearch/v1", {
-      params: { key: api_key, google_id, q: query, num: 5 },
-      timeout: 10000,
-    });
+    const { data } = await axios.get(
+      "https://www.googleapis.com/customsearch/v1",
+      {
+        params: {
+          key: api_key,
+          cx: google_id,
+          q: query,
+          num: 5,
+          lr: "lang_uk",
+          safe: "off",
+        },
+        timeout: 10000,
+      }
+    );
 
     return data.items?.map(item => ({
       title: item.title,

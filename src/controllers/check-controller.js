@@ -1,11 +1,11 @@
 import { checkTextService } from "../services/check-service.js";
 
-export async function checkTextController(req, res, next) {
+export async function checkTextController(requestFromFrontend, responseToFrontend, next) {
   try {
-    const { text, options } = req.body;
+    const { text, options } = requestFromFrontend.body;
 
-    const result = await checkTextService(text, options);
-    res.json(result);
+    const resultAfterCheck = await checkTextService(text, options);
+    responseToFrontend.json(resultAfterCheck);
   } catch (err) {
     next(err);
   }
